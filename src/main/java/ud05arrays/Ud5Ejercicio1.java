@@ -3,6 +3,7 @@
  */
 package ud05arrays;
 
+import helpers.Helper;
 
 /**
  * @author eserrano
@@ -41,7 +42,15 @@ public class Ud5Ejercicio1 {
 	 * @return Nuevo array con los Virus creados.
 	 */
 	public static Virus[] crearArrayVirus(Object[][] datosVirus) {
-		return null;
+		
+		Virus[] v = new Virus[datosVirus.length];
+		int i = 0;
+		for (Object[] virus : datosVirus) {
+			v[i] = new Virus((String)virus[0], (Integer)virus[1], (Float)virus[2]);
+			i++;
+		}
+		
+		return v;
 	}
 	
 
@@ -63,7 +72,10 @@ public class Ud5Ejercicio1 {
 	public static void imprimeVirus(Virus[] array, String titulo, boolean pares) {
 		System.out.println(titulo + ": --------------------");
 		
-		//TODO Insertar solucion aquí
+		int inicio = pares ? 0 : 1;
+		for (int i = inicio; i < array.length; i = i +2) {
+			System.out.println(array[i]);
+		}
 		
 		System.out.println("-----------------------------");
 	}
@@ -81,7 +93,18 @@ public class Ud5Ejercicio1 {
 	 * @return copia ordenada del array pasado como parametro
 	 */
 	public static Virus[] ordena(final Virus[] array) {
-		return null;
+		
+		Virus[] copia = array.clone();
+		
+		 for (int i = 0; i < copia.length; i++) {
+			for (int j = i+1; j < copia.length; j++) {
+				if (copia[j].compareTo(copia[i]) < 0) {
+					Helper.swap(copia, i, j);
+				}
+			}
+		}
+		
+		return copia;
 	}
 	
 	/**
@@ -105,7 +128,21 @@ public class Ud5Ejercicio1 {
 	 * @return nuevo array sin los eliminados.
 	 */
 	public static Virus[] eliminaVirus(Virus v,final Virus[] array) {
-		return null;
+		
+		Virus[] copia = array.clone();
+		if (copia !=null) {
+			for (int i = 0; i < copia.length; i++) {
+				while (copia[i] != null && v.equals(copia[i])) {
+					copia[i] = null;
+					
+					for (int j = i; j < copia.length - 1; j++) {
+						Helper.swap(copia, j, j + 1);
+					}
+				}
+			}
+		}
+		
+		return copia;
 	}
 	
 	/**
@@ -121,7 +158,29 @@ public class Ud5Ejercicio1 {
 	 * null si no hay ninguno más peligroso
 	 */
 	public static int [] encuentraPeligrosos(Virus v, Virus[] array) {
-		return null;
+		
+		Float umbral = v.getR0() * v.getLetalidad();
+		int[] retorno = new int[array.length];
+		
+		int j = 0;
+		for (int i = 0; i < retorno.length; i++) {
+			Float letalidad = array[i].getR0() * array[i].getLetalidad();
+			if (letalidad >= umbral) {
+				retorno[j] = i;
+				j++;
+			}
+		}
+		
+		int[] nuevo = null;
+		if (j > 0) {
+			nuevo = new int[j];
+			for (int i = 0; i < nuevo.length; i++) {
+				nuevo[i] = retorno[i];
+			}
+		}
+		
+		
+		return nuevo;
 	}
 	
 	
